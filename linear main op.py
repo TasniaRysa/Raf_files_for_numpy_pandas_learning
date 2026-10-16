@@ -1,7 +1,9 @@
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
+from sklearn import metrics
 data=pd.read_csv("student_scores.csv")
 #data.plot()
 #plt.show()
@@ -12,10 +14,21 @@ X_train,X_test,Y_train,Y_test=train_test_split(x,y,test_size=0.2, random_state=0
 lmodel=LinearRegression()
 #instance of linear regression model created
 
+
 print(lmodel.fit(X_train, Y_train))
 print(X_train)
-print(lmodel.intercept_) #intercept is the value of y when x=0
-print(lmodel.coef_) #coefficient is the slope of the line
+print(lmodel.intercept_) #intercept is the value of y when x=0 y=mx+b er b
+print(lmodel.coef_) #coefficient is the slope of the line (m)
 
 Y_pred=lmodel.predict(X_test) #predicts the values of y for the given x values in X_test
 print(Y_pred)
+
+new_data=pd.DataFrame({"Actual":Y_test,"Predicted":Y_pred}) #creating a new dataframe wi
+print(new_data)
+
+y2=lmodel.intercept_+data['Hours']*lmodel.coef_ # y from mx+b from all data , yy_predict wwas onlyy from xx_test
+print(metrics.mean_absolute_error(Y_test,Y_pred))
+print(np.sqrt(metrics.mean_squared_error(Y_test,Y_pred)))
+plt.scatter(data['Hours'],data['Scores'])
+plt.plot(x,y2,color='red')
+plt.show()
